@@ -1,0 +1,24 @@
+A
+B
+C
+D
+E
+F
+G
+H
+LINKSTATE
+A-B 1
+B-C 2
+C-D 3
+D-E 4
+E-F 5
+F-G 6 
+G-H 7 C,E,G
+UPDATE
+A-C 8 B,D,F
+B-D 9
+C-E 10
+D-F 11
+E-G 12
+F-H 13 A,C,E,G
+END

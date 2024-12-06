@@ -1,0 +1,144 @@
+C Neighbour Table:
+B|2
+D|3
+
+C LSDB:
+B|C|2
+C|D|3
+D|E|4
+
+C Routing Table:
+B|B|2
+D|D|3
+E|D|7
+
+E Neighbour Table:
+D|4
+F|5
+
+E LSDB:
+D|E|4
+E|F|5
+F|G|6
+
+E Routing Table:
+D|D|4
+F|F|5
+G|F|11
+
+G Neighbour Table:
+F|6
+H|7
+
+G LSDB:
+F|G|6
+G|H|7
+
+G Routing Table:
+F|F|6
+H|H|7
+
+B Neighbour Table:
+A|1
+C|2
+
+B LSDB:
+A|B|1
+A|C|8
+B|C|2
+C|D|3
+
+B Routing Table:
+A|A|1
+C|C|2
+D|C|5
+
+D Neighbour Table:
+C|3
+E|4
+
+D LSDB:
+A|C|8
+C|D|3
+D|E|4
+E|F|5
+
+D Routing Table:
+A|C|11
+C|C|3
+E|E|4
+F|E|9
+
+F Neighbour Table:
+E|5
+G|6
+
+F LSDB:
+E|F|5
+F|G|6
+G|H|7
+
+F Routing Table:
+E|E|5
+G|G|6
+H|G|13
+
+A Neighbour Table:
+B|1
+C|8
+
+A LSDB:
+A|B|1
+A|C|8
+B|C|2
+
+A Routing Table:
+B|B|1
+C|B|3
+
+C Neighbour Table:
+A|8
+B|2
+D|3
+
+C LSDB:
+A|C|8
+B|C|2
+C|D|3
+D|E|4
+
+C Routing Table:
+A|A|8
+B|B|2
+D|D|3
+E|D|7
+
+E Neighbour Table:
+D|4
+F|5
+
+E LSDB:
+D|E|4
+E|F|5
+F|G|6
+F|H|13
+
+E Routing Table:
+D|D|4
+F|F|5
+G|F|11
+H|F|18
+
+G Neighbour Table:
+F|6
+H|7
+
+G LSDB:
+F|G|6
+F|H|13
+G|H|7
+
+G Routing Table:
+F|F|6
+H|H|7
+

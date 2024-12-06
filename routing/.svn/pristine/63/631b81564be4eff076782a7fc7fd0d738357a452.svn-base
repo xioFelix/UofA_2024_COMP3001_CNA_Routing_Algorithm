@@ -1,0 +1,87 @@
+X Neighbour Table:
+Z|1
+
+X LSDB:
+X|Z|1
+
+X Routing Table:
+Z|Z|1
+
+Y Neighbour Table:
+
+Y LSDB:
+
+Y Routing Table:
+
+X Neighbour Table:
+Y|5
+Z|1
+
+X LSDB:
+X|Y|5
+X|Z|1
+Y|Z|3
+
+X Routing Table:
+Y|Z|4
+Z|Z|1
+
+Z Neighbour Table:
+X|1
+Y|3
+
+Z LSDB:
+X|Y|5
+X|Z|1
+Y|Z|3
+
+Z Routing Table:
+X|X|1
+Y|Y|3
+
+X Neighbour Table:
+Y|5
+
+X LSDB:
+X|Y|5
+Y|Z|3
+
+X Routing Table:
+Y|Y|5
+Z|Y|8
+
+Y Neighbour Table:
+X|5
+Z|3
+
+Y LSDB:
+X|Y|5
+Y|Z|3
+
+Y Routing Table:
+X|X|5
+Z|Z|3
+
+Y Neighbour Table:
+X|5
+Z|9
+
+Y LSDB:
+X|Y|5
+Y|Z|9
+
+Y Routing Table:
+X|X|5
+Z|Z|9
+
+Z Neighbour Table:
+Y|9
+
+Z LSDB:
+X|Y|5
+Y|Z|9
+
+Z Routing Table:
+X|Y|14
+Y|Y|9
+

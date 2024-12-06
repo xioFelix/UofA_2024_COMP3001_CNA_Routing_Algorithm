@@ -1,0 +1,162 @@
+#!/usr/bin/env python3
+
+import sys
+import heapq
+
+class Router:
+    def __init__(self, name):
+        self.name = name
+        self.neighbors = {}
+        self.lsdb = {}
+        self.routing_table = {}
+
+    def add_neighbor(self, neighbor, cost):
+        self.neighbors[neighbor] = cost
+
+    def remove_neighbor(self, neighbor):
+        if neighbor in self.neighbors:
+            del self.neighbors[neighbor]
+
+    def update_lsdb(self, link_state):
+        router1, router2, cost = link_state
+        self.lsdb[(router1, router2)] = cost
+
+    def run_dijkstra(self):
+        # Initialize distances for all routers from the lsdb, not just neighbors
+        distances = {router: float("inf") for router in self.lsdb}
+        distances[self.name] = 0
+        pq = [(0, self.name)]
+
+        while pq:
+            current_distance, current_router = heapq.heappop(pq)
+
+            # Ensure we're accessing valid entries in the distances dictionary
+            if current_router not in distances:
+                continue
+
+            if current_distance > distances[current_router]:
+                continue
+
+            # Processing each edge from the current router
+            for neighbor, cost in self.neighbors.items():
+                if neighbor in distances:  # Check if neighbor is a valid router
+                    distance = current_distance + cost
+                    if distance < distances[neighbor]:
+                        distances[neighbor] = distance
+                        heapq.heappush(pq, (distance, neighbor))
+
+        # Update the routing table after running Dijkstra
+        self.routing_table = {}
+        for router, cost in distances.items():
+            if router != self.name:  # Avoid self-loop in the routing table
+                self.routing_table[router] = (self.find_next_hop(router, distances), cost)
+
+    def find_next_hop(self, destination, distances):
+        # This method backtracks from the destination to find the next hop
+        current = destination
+        while current in self.lsdb and self.lsdb[current] != self.name:
+            current = self.lsdb[current]
+        return current
+
+    def print_neighbor_table(self):
+        print(f"{self.name} Neighbor Table:")
+        for neighbor, cost in sorted(self.neighbors.items()):
+            print(f"{neighbor}|{cost}")
+        print()
+
+    def print_lsdb(self):
+        print(f"{self.name} LSDB:")
+        for (router1, router2), cost in sorted(self.lsdb.items()):
+            print(f"{router1}|{router2}|{cost}")
+        print()
+
+    def print_routing_table(self):
+        print(f"{self.name} Routing Table:")
+        for dest, (next_hop, cost) in sorted(self.routing_table.items()):
+            print(f"{dest}|{next_hop}|{cost}")
+        print()
+
+def parse_input():
+    # # Debug
+    # print("Starting input parsing")
+    # #####
+    routers = {}
+
+    # Parse router names until "LINKSTATE"
+    while True:
+        line = sys.stdin.readline().strip()
+        if line == "LINKSTATE":
+            break
+        if line:
+            routers[line] = Router(line)
+
+    # Parse initial link states until "UPDATE"
+    while True:
+        line = sys.stdin.readline().strip()
+        if line == "UPDATE":
+            break
+        parts = line.split("-")
+        if len(parts) == 2:
+            router1, router2_cost = parts
+            router2, cost = router2_cost.split()
+            cost = int(cost)
+            routers[router1].add_neighbor(router2, cost)
+            routers[router2].add_neighbor(router1, cost)
+
+    # # Debug
+    # print("Parsed routers:", routers.keys())
+    # #####
+
+    return routers
+def main():
+    routers = parse_input()
+    print("Processing updates")
+
+    # Process link state updates
+    for line in sys.stdin:
+        line = line.strip()
+        if line == "END":
+            print("End of input detected, stopping.")
+            break
+        print("Update line:", line)
+        parts = line.split()
+        if len(parts) >= 3:
+            router_pair, cost = parts[0], parts[1]
+            selected_routers = parts[2].split(',') if len(parts) > 2 else []
+            router1, router2 = router_pair.split('-')
+            cost = int(cost)
+
+            # Ensure routers exist
+            if router1 not in routers:
+                routers[router1] = Router(router1)
+            if router2 not in routers:
+                routers[router2] = Router(router2)
+
+            # Update links and possibly remove or add new ones
+            if cost == -1:
+                routers[router1].remove_neighbor(router2)
+                routers[router2].remove_neighbor(router1)
+            else:
+                routers[router1].add_neighbor(router2, cost)
+                routers[router2].add_neighbor(router1, cost)
+
+            # Update LSDB and run Dijkstra for each router
+            for router in routers.values():
+                router.update_lsdb((router1, router2, cost))
+                router.run_dijkstra()
+
+            # Print tables for selected routers
+            if selected_routers:
+                print(f"Selected routers for printing: {selected_routers}")
+            for router_name in selected_routers:
+                router = routers.get(router_name)
+                if router:
+                    print(f"Printing data for router: {router_name}")
+                    router.print_neighbor_table()
+                    router.print_lsdb()
+                    router.print_routing_table()
+                else:
+                    print(f"Router {router_name} not found for printing.")
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,81 @@
+#!/usr/bin/env python3
+
+import sys
+import heapq
+
+class Router:
+    def __init__(self, name):
+        self.name = name
+        self.neighbors = {}
+        self.lsdb = {}
+        self.routing_table = {}
+
+    def add_neighbor(self, neighbor, cost):
+        self.neighbors[neighbor] = cost
+        pass
+
+    def remove_neighbor(self, neighbor):
+        if neighbor in self.neighbors:
+            del self.neighbors[neighbor]
+
+    def update_lsdb(self, link_state):
+        router1, router2, cost = link_state
+        self.lsdb[(router1, router2)] = cost
+
+    def run_dijkstra(self):
+        distances = {router: float("inf") for router in self.lsdb}
+        distances[self.name] = 0
+        pq = [(0, self.name)]
+
+        while pq:
+            current_distance, current_router = heapq.heappop(pq)
+
+            if current_distance > distances[current_router]:
+                continue
+
+            for neighbor, cost in self.neighbors.items():
+                distance = current_distance + cost
+                if distance < distances[neighbor]:
+                    distances[neighbor] = distance
+                    heapq.heappush(pq, (distance, neighbor))
+
+        self.routing_table = {
+            router: (self.neighbors[router], cost)
+            for router, cost in distances.items()
+            if router in self.neighbors
+        }
+
+    def print_neighbor_table(self):
+        # TODO: Realize the logic of printing neighbor tables
+        pass
+
+    def print_lsdb(self):
+        # TODO: Realize the logic of printing link state database
+        pass
+
+    def print_routing_table(self):
+        # TODO: Implement the logic of printing routing tables
+        pass
+
+
+def parse_input():
+    # TODO: Realize the logic of parsing input
+    pass
+
+
+def main():
+    routers = {}
+
+    # Parse the initial input and create a router object
+    parse_input()
+
+    # Handle link status updates
+    for line in sys.stdin:
+        if line.strip() == "END":
+            break
+        # TODO: Parse the link status update, update the router's link status database and neighbor table
+        # TODO: Print their neighbor tables, link status databases and routing tables according to the list of selected routers.
+
+
+if __name__ == "__main__":
+    main()
